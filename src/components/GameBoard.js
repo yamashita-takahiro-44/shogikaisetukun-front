@@ -29,6 +29,7 @@ const GameBoard = () => {
   const { gameState, setGameState } = useGameState();
   const shogiRef = useRef(null);
   const [moves, setMoves] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [imageURL, setImageURL] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [board, setBoard] = useState(null);
