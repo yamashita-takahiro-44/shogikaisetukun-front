@@ -80,17 +80,17 @@ const ImageBoardPage = () => {
     fetch(`https://shogikaisetukun.fly.dev/api/images/${modalImageId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: newComment })
+      body: JSON.stringify({ comment: { content: newComment, image_id: modalImageId } })
     })
-      .then(response => response.json())
-      .then(data => {
-        setNewComment('');
-        fetchComments(modalImageId);
-      })
-      .catch(error => {
-        console.error('コメントの追加に失敗しました:', error);
-      });
-  };
+    .then(response => response.json())
+    .then(data => {
+      setNewComment('');
+      fetchComments(modalImageId);
+    })
+    .catch(error => {
+      console.error('コメントの追加に失敗しました:', error);
+    });
+  };  
 
   return (
     <Layout className="layout">
