@@ -6,23 +6,39 @@ const AdminPage = () => {
   const [token, setToken] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchImages();
-    }
-  }, [isAuthenticated]);
-
   // 画像データを取得する関数
   const fetchImages = () => {
-    fetch('https://shogikaisetukun.com/api/images')
+    fetch('https://shogikaisetukun.fly.dev/api/images', {
+      headers: { 'Authorization': token }
+    })
       .then(response => response.json())
       .then(data => setImages(data))
       .catch(error => console.error('画像の読み込みに失敗しました:', error));
   };
 
+  // トークンを検証する関数
+  const verifyToken = () => {
+    fetch('https://shogikaisetukun.fly.dev/api/verify_token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    })
+    .then(response => {
+      if (response.ok) {
+        setIsAuthenticated(true);
+        fetchImages();
+      } else {
+        alert('トークンが無効です');
+      }
+    })
+    .catch(error => {
+      console.error('トークンの検証に失敗しました:', error);
+    });
+  };
+
   // 画像を削除する関数
   const handleDelete = (imageId) => {
-    fetch(`https://shogikaisetukun.com/api/images/${imageId}`, {
+    fetch(`https://shogikaisetukun.fly.dev/api/images/${imageId}`, {
       method: 'DELETE',
       headers: { 'Authorization': token }
     })
@@ -46,7 +62,7 @@ const AdminPage = () => {
             value={token}
             onChange={e => setToken(e.target.value)}
           />
-          <Button onClick={() => setIsAuthenticated(true)}>ログイン</Button>
+          <Button onClick={verifyToken}>ログイン</Button>
         </div>
       )}
       {isAuthenticated && images.map(image => (
