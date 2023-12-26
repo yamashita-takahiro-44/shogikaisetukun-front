@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Input } from 'antd';
 
 const AdminPage = () => {
@@ -6,15 +6,23 @@ const AdminPage = () => {
   const [token, setToken] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // 画像データを取得する関数
   const fetchImages = () => {
     fetch('https://shogikaisetukun.fly.dev/api/images', {
       headers: { 'Authorization': token }
     })
       .then(response => response.json())
-      .then(data => setImages(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setImages(data);
+        } else {
+          console.error('予期せぬデータ形式:', data);
+        }
+      })
       .catch(error => console.error('画像の読み込みに失敗しました:', error));
   };
 
+  // トークンを検証する関数
   const verifyToken = () => {
     fetch('https://shogikaisetukun.fly.dev/api/verify_token', {
       method: 'POST',
@@ -34,6 +42,7 @@ const AdminPage = () => {
     });
   };
 
+  // 画像を削除する関数
   const handleDelete = (imageId) => {
     fetch(`https://shogikaisetukun.fly.dev/api/images/${imageId}`, {
       method: 'DELETE',
