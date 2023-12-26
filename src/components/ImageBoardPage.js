@@ -145,4 +145,4 @@ const ImageBoardPage = () => {
   );
 };
 
-export default ImageBoard;
+export default ImageBoardPage;
