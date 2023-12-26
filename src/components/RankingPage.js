@@ -14,7 +14,7 @@ const RankingPage = () => {
   const [comments, setComments] = useState({});
 
   useEffect(() => {
-    fetch('https://shogikaisetukun.com/api/images/ranking')
+    fetch('https://shogikaisetukun.fly.dev/api/images/ranking')
       .then(response => response.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -40,7 +40,7 @@ const RankingPage = () => {
   };
 
   const fetchComments = (imageId) => {
-    fetch(`https://shogikaisetukun.com/api/images/${imageId}/comments`)
+    fetch(`https://shogikaisetukun.fly.dev/api/images/${imageId}/comments`)
       .then(response => response.json())
       .then(data => {
         setComments({ ...comments, [imageId]: data });

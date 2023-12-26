@@ -17,7 +17,7 @@ const ImageBoardPage = () => {
   const [newComment, setNewComment] = useState('');
 
   useEffect(() => {
-    fetch('https://shogikaisetukun.com/api/images')
+    fetch('https://shogikaisetukun.fly.dev/api/images')
       .then(response => response.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -48,7 +48,7 @@ const ImageBoardPage = () => {
       return;
     }
 
-    fetch(`https://shogikaisetukun.com/api/images/${imageId}/like`, {
+    fetch(`https://shogikaisetukun.fly.dev/api/images/${imageId}/like`, {
       method: 'POST',
     })
     .then(response => response.json())
@@ -66,7 +66,7 @@ const ImageBoardPage = () => {
   };
 
   const fetchComments = (imageId) => {
-    fetch(`https://shogikaisetukun.com/api/images/${imageId}/comments`)
+    fetch(`https://shogikaisetukun.fly.dev/api/images/${imageId}/comments`)
       .then(response => response.json())
       .then(data => {
         setComments({ ...comments, [imageId]: data });
@@ -77,7 +77,7 @@ const ImageBoardPage = () => {
   };
 
   const handleAddComment = () => {
-    fetch(`https://shogikaisetukun.com/api/images/${modalImageId}/comments`, {
+    fetch(`https://shogikaisetukun.fly.dev/api/images/${modalImageId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: newComment })
