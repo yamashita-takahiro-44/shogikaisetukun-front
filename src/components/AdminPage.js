@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Input } from 'antd';
 
 const AdminPage = () => {
   const [images, setImages] = useState([]);
   const [token, setToken] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // 画像データを取得する関数
+  const fetchImages = () => {
+    fetch('https://shogikaisetukun.fly.dev/api/images')
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setImages(data);
+        } else {
+          console.error('予期せぬデータ形式:', data);
+        }
+      })
+      .catch(error => console.error('画像の読み込みに失敗しました:', error));
+  };
+
+  // コンポーネントのマウント時に画像データを取得
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
   // トークンを検証する関数
   const verifyToken = () => {
@@ -16,7 +35,6 @@ const AdminPage = () => {
     .then(response => {
       if (response.ok) {
         setIsAuthenticated(true);
-        fetchImages();
       } else {
         alert('トークンが無効です');
       }
@@ -24,22 +42,6 @@ const AdminPage = () => {
     .catch(error => {
       console.error('トークンの検証に失敗しました:', error);
     });
-  };
-
-  // 画像データを取得する関数
-  const fetchImages = () => {
-    fetch('https://shogikaisetukun.fly.dev/api/images', {
-      headers: { 'Authorization': token }
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setImages(data);
-        } else {
-          console.error('予期せぬデータ形式:', data);
-        }
-      })
-      .catch(error => console.error('画像の読み込みに失敗しました:', error));
   };
 
   // 画像を削除する関数
