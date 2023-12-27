@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Button, Input, Modal } from 'antd';
 
 const AdminPage = () => {
@@ -87,7 +87,6 @@ const AdminPage = () => {
     setComments([]);
   };
 
-  // 画像とトークン入力フォームの表示
   return (
     <div>
       {!isAuthenticated && (
@@ -101,17 +100,16 @@ const AdminPage = () => {
           <Button onClick={verifyToken}>ログイン</Button>
         </div>
       )}
-
       {isAuthenticated && images.map(image => (
         <Card key={image.id}>
-          <img alt="example" src={image.url} onClick={() => showModal(image.id)} style={{ width: '100%', height: 'auto' }} />
+          <img alt="example" src={image.url} style={{ width: '100%', height: 'auto' }} />
           <Button onClick={() => handleDelete(image.id)}>削除</Button>
+          <Button onClick={() => showModal(image.id)}>コメントを見る</Button>
         </Card>
       ))}
-
       <Modal
-        title="コメント"
-        visible={isModalVisible}
+        title={`コメント - 画像ID: ${selectedImageId}`}
+        open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
